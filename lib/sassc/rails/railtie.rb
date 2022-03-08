@@ -53,9 +53,17 @@ module SassC::Rails
         end
 
         if env.respond_to?(:register_transformer)
-          env.register_transformer 'text/sass', 'text/css', SassC::Rails::SassTemplate.new
-          env.register_transformer 'text/scss', 'text/css', SassC::Rails::ScssTemplate.new
+          if Rails.version > '7.0' && app.config.assets.debug && app.config.inline_source_maps
+            sass_transformer = Sprockets::SasscProcessor.new(importer: SassC::Rails::Importer, sass_config: Rails.application.config.sass)
+            scss_transformer = Sprockets::ScsscProcessor.new(importer: SassC::Rails::Importer, sass_config: Rails.application.config.sass)
+          else
+            sass_transformer = SassC::Rails::SassTemplate.new
+            scss_transformer = SassC::Rails::ScssTemplate.new
+          end
+          env.register_transformer 'text/sass', 'text/css', sass_transformer
+          env.register_transformer 'text/scss', 'text/css', scss_transformer
         end
+
 
         if env.respond_to?(:register_engine)
           [

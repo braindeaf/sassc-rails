@@ -19,6 +19,8 @@ class SassRailsTest < MiniTest::Test
     @app.config.sass = ActiveSupport::OrderedOptions.new
     @app.config.sass.preferred_syntax = :scss
     @app.config.sass.load_paths       = []
+    @app.config.assets.debug          = true
+    @app.config.inline_source_maps    = true
 
     # Not actually a default, but it makes assertions more complicated
     @app.config.sass.line_comments    = false
