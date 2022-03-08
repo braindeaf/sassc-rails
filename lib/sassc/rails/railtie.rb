@@ -53,7 +53,7 @@ module SassC::Rails
         end
 
         if env.respond_to?(:register_transformer)
-          if Rails.version > '7.0' && app.config.assets.debug && app.config.inline_source_maps
+          if Rails.version > '7.0' && app.config.assets.debug && app.config.sass.inline_source_maps
             sass_transformer = Sprockets::SasscProcessor.new(importer: SassC::Rails::Importer, sass_config: Rails.application.config.sass)
             scss_transformer = Sprockets::ScsscProcessor.new(importer: SassC::Rails::Importer, sass_config: Rails.application.config.sass)
           else
